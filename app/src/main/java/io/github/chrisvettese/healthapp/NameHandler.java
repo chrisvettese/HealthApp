@@ -34,5 +34,12 @@ public class NameHandler {
         } catch (IOException e) {
             //give up
         }
+        if (isDoctor) {
+            activity.setContentView(R.layout.layout_doctor);
+            Doctor.setup(activity);
+        } else {
+            activity.setContentView(R.layout.layout_client);
+            Client.setup(activity);
+        }
     }
 }

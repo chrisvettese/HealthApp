@@ -1,6 +1,7 @@
 package io.github.chrisvettese.healthapp;
 
 import android.support.design.widget.TextInputLayout;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -11,9 +12,10 @@ import java.io.IOException;
 
 public class Client {
     private static String name;
-    private static String doctorID;
+    private static int doctorID;
 
-    public static void setup(MainActivity activity) {
+    public static void setup(final MainActivity activity) {
+        activity.findViewById(R.id.viewAppointmentsClient).setVisibility(View.GONE);
         try {
             FileInputStream nameIn = activity.openFileInput("id.txt");
             StringBuilder builder = new StringBuilder();
@@ -22,11 +24,18 @@ public class Client {
                 builder.append((char) character);
             }
             nameIn.close();
-            doctorID = nameIn.toString();
+            doctorID = Integer.parseInt(nameIn.toString());
         } catch (IOException e) {
             //Client hasn't entered their doctor's id yet
             Client.setupIDInput(activity);
         }
+        activity.findViewById(R.id.backButtonClient).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.setContentView(R.layout.activity_main);
+                MainActivity.initMainActivity(activity);
+            }
+        });
     }
 
     public static void setupIDInput(MainActivity activity) {
@@ -36,7 +45,8 @@ public class Client {
             @Override
             public boolean onEditorAction(TextView view, int actionID, KeyEvent event) {
                 if (actionID == EditorInfo.IME_ACTION_DONE) {
-                    doctorID = idInput.getEditText().getText().toString();
+                    doctorID = Integer.parseInt(idInput.getEditText().getText().toString());
+                    //Check if doctorID is valid
                     return true;
                 }
                 return false;
