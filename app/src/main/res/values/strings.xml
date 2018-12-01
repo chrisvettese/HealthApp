@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">Health App</string>
+    <string name="app_name">MedCheck</string>
     <string name="enter_name">Enter your name</string>
     <string name="enter_id">Enter the ID given by your doctor</string>
+    <string name="enter_date">Enter appointment date: MMDDYYYY</string>
+    <string name="enter_time">Enter appointment time (24 hours): HHMM</string>
 </resources>
