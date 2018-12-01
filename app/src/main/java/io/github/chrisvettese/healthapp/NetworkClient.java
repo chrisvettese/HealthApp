@@ -33,13 +33,13 @@ public class NetworkClient extends Service {
                     in = new ObjectInputStream(new BufferedInputStream(clientSocket.getInputStream()));
                     out = new ObjectOutputStream(new BufferedOutputStream(clientSocket.getOutputStream()));
 
+                    Client.setDoctorName(in.readUTF());
+
                     while (open) {
                         //Receive update from doctor
                         byte dataIn = in.readByte();
                         if (dataIn == BOOK) {
-                            //Read the date from doctor as string
-                            String date = in.readUTF();
-                            Client.addAppointment(date);
+                            confirmAppointmentDate(in.readUTF(), in.readUTF());
                         }
                     }
                 } catch (IOException e) {
@@ -70,6 +70,7 @@ public class NetworkClient extends Service {
         try {
             out.writeByte(CHECK_ID);
             out.writeInt(ID);
+            out.writeUTF(Client.getName());
             return in.readBoolean();
         } catch (IOException e) {
             //oops
@@ -84,5 +85,8 @@ public class NetworkClient extends Service {
         } catch (IOException e) {
             //oh no
         }
+    }
+    protected static void confirmAppointmentDate(String date, String time) {
+        Client.addAppointment(date, time);
     }
 }
