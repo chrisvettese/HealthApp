@@ -1,20 +1,22 @@
 package io.github.chrisvettese.healthapp;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.View;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Doctor {
-    public static String loadName(MainActivity activity) {
-        try {
-            FileReader nameIn = new FileReader(activity.getFilesDir() + "name.txt");
-        } catch (FileNotFoundException e) {
-            //Ask doctor to enter name
-            activity.findViewById(R.id.input).setVisibility(View.VISIBLE);
-        }
-        //activity.setContentView(R.layout.layout_doctor);
-        return "";
+    private static String name;
+
+    public static  void setName(String name) {
+        Doctor.name = name;
     }
 }

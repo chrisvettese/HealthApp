@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Health App</string>
     <string name="enter_name">Enter your name</string>
+    <string name="enter_id">Enter the ID given by your doctor</string>
 </resources>
