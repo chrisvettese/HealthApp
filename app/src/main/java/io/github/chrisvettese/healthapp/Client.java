@@ -1,5 +1,6 @@
 package io.github.chrisvettese.healthapp;
 
+import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -22,7 +23,7 @@ public class Client {
     private static boolean bookingMode = false;
     private static boolean viewingMode = false;
 
-    private static List<String> dates;
+    private static List<String[]> dates;
 
     public static void setup(final MainActivity activity) {
         dates = new ArrayList<>();
@@ -41,6 +42,9 @@ public class Client {
             }
             nameIn.close();
             doctorID = Integer.parseInt(nameIn.toString());
+            Intent intent = new Intent(activity, NetworkClient.class);
+            new NetworkClient().startService(intent);
+            NetworkClient.validateID(doctorID);
         } catch (IOException e) {
             //Client hasn't entered their doctor's id yet
             Client.setupIDInput(activity);
@@ -73,6 +77,8 @@ public class Client {
     }
 
     public static void setupIDInput(final MainActivity activity) {
+        new NetworkClient().startService(null);
+
         final TextInputLayout idInput = activity.findViewById(R.id.idInput);
         idInput.getEditText().setSingleLine();
         idInput.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -121,7 +127,7 @@ public class Client {
         Client.doctorName = name;
     }
     protected static void addAppointment(String date, String time) {
-        dates.add(date);
+        dates.add(new String[] {date, time});
     }
     /**When the "Book Appointment" button is pressed*/
     protected static void setRequestView(final MainActivity a) {
@@ -169,9 +175,9 @@ public class Client {
         a.findViewById(R.id.requestClient).setVisibility(View.GONE);
         ScrollView list = a.findViewById(R.id.appointmentList);
         list.removeAllViews();
-        for (String date : dates) {
+        for (String[] date : dates) {
             TextView textView = new TextView(a);
-            textView.setText(date);
+            textView.setText(date[0] + ", " + date[1]);
             list.addView(textView);
         }
 

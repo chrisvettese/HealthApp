@@ -71,6 +71,7 @@ public class NetworkClient extends Service {
             out.writeByte(CHECK_ID);
             out.writeInt(ID);
             out.writeUTF(Client.getName());
+            out.flush();
             return in.readBoolean();
         } catch (IOException e) {
             //oops
@@ -82,6 +83,7 @@ public class NetworkClient extends Service {
             out.writeByte(BOOK);
             out.writeUTF(date);
             out.writeUTF(time);
+            out.flush();
         } catch (IOException e) {
             //oh no
         }
