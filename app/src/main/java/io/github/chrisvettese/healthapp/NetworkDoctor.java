@@ -3,6 +3,7 @@ package io.github.chrisvettese.healthapp;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -12,26 +13,29 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class NetworkDoctor extends Service {
-    private Socket socket;
-    private ServerSocket serverSocket;
+public class NetworkDoctor {
+    private static Socket socket;
+    private static ServerSocket serverSocket;
     private static ObjectInputStream in;
     private static ObjectOutputStream out;
 
-    private boolean open;
+    private static boolean open;
 
-    @Override
-    public void onCreate() {
+    protected static void start() {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    serverSocket = new ServerSocket(2468);
+                    Log.d("doctor", "Server socket");
+                    serverSocket = new ServerSocket(2472);
+                    Log.d("doctor", "waiting to accept");
                     socket = serverSocket.accept();
-                    serverSocket.close();
-                    serverSocket = null;
-                    in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+                    //serverSocket.close();
+                    //serverSocket = null;
+                    Log.d("doctor", "output stream");
                     out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+                    Log.d("doctor", "input stream");
+                    in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
                     socket.setTcpNoDelay(true);
                     //Send patient the doctor's name
                     out.writeUTF(Doctor.getName());
@@ -47,16 +51,14 @@ public class NetworkDoctor extends Service {
                         }
                     }
                 } catch (IOException e) {
+                    Log.d("doctor", e.getMessage());//TODO
                     //patients will die
                 }
             }
-        });
+        }).start();
     }
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-    @Override
+
+    /*@Override
     public void onDestroy() {
         try {
             if (serverSocket != null) serverSocket.close();
@@ -66,7 +68,7 @@ public class NetworkDoctor extends Service {
         } catch (IOException e) {
             //shrug
         }
-    }
+    }*/
     protected static void receivePatientID(int ID, String patientName) {
         try {
             if (Doctor.getID() == 0) out.writeBoolean(false);
@@ -80,12 +82,17 @@ public class NetworkDoctor extends Service {
 
         }
     }
-    protected static void confirmAppointment(String date, String time) {
-        try {
-            out.writeUTF(date);
-            out.writeUTF(time);
-        } catch (IOException e) {
-            //couldn't confirm appointment
-        }
+    protected static void confirmAppointment(final String date, final String time) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    out.writeUTF(date);
+                    out.writeUTF(time);
+                } catch (IOException e) {
+                    //couldn't confirm appointment
+                }
+            }
+        });
     }
 }

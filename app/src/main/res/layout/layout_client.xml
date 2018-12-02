@@ -8,7 +8,7 @@
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/idInput"
-        android:layout_width="368dp"
+        android:layout_width="352dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
@@ -91,7 +91,7 @@
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/timeInput"
-        android:layout_width="363dp"
+        android:layout_width="349dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
@@ -110,7 +110,7 @@
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/dateInput"
-        android:layout_width="367dp"
+        android:layout_width="346dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="9dp"
         android:layout_marginLeft="9dp"
@@ -158,8 +158,9 @@
         android:id="@+id/appointmentList"
         android:layout_width="373dp"
         android:layout_height="142dp"
-        tools:layout_editor_absoluteX="6dp"
-        tools:layout_editor_absoluteY="16dp">
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        tools:layout_editor_absoluteX="6dp">
 
         <LinearLayout
             android:layout_width="match_parent"

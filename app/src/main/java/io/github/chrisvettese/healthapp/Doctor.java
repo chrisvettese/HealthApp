@@ -52,8 +52,10 @@ public class Doctor {
                 id = new Random().nextInt(900000) + 100000;
                 TextView text = activity.findViewById(R.id.idLabelDoctor);
                 text.setText("Tell the patient this ID: " + id);
-                Intent intent = new Intent(activity, NetworkDoctor.class);
-                new NetworkDoctor().startService(intent);
+
+                //Intent intent = new Intent(activity.getBaseContext(), NetworkDoctor.class);
+                //activity.startService(intent);
+                NetworkDoctor.start();
             }
         });
         //Doctor wants to view appointment dates

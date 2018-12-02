@@ -42,8 +42,10 @@ public class Client {
             }
             nameIn.close();
             doctorID = Integer.parseInt(nameIn.toString());
-            Intent intent = new Intent(activity, NetworkClient.class);
-            new NetworkClient().startService(intent);
+            //Intent intent = new Intent(activity.getBaseContext(), NetworkClient.class);
+            //activity.startService(intent);
+            NetworkClient.start();
+
             NetworkClient.validateID(doctorID);
         } catch (IOException e) {
             //Client hasn't entered their doctor's id yet
@@ -77,7 +79,9 @@ public class Client {
     }
 
     public static void setupIDInput(final MainActivity activity) {
-        new NetworkClient().startService(null);
+        //Intent intent = new Intent(activity.getBaseContext(), NetworkClient.class);
+        //activity.startService(intent);
+        NetworkClient.start();
 
         final TextInputLayout idInput = activity.findViewById(R.id.idInput);
         idInput.getEditText().setSingleLine();
